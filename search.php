@@ -146,6 +146,9 @@ if (isset($_POST['searchitem'])) {
                     $publisher = $row['publisher'];
                     $author = $row['author'];
             ?>
+            <?php
+                }
+            ?>
             <tr>
                 <td><input type="text" name="title" id="title" value="<?php echo $title; ?>" readonly></td>
                 <td><input type="text" name="author" id="author" value="<?php echo $author; ?>" readonly></td>
@@ -156,8 +159,9 @@ if (isset($_POST['searchitem'])) {
                     </form>
                 </td>
             </tr>
+
             <?php
-                }
+                
             } else {
                 echo '<tr><td colspan="4" class="no-record">No record found. <a href="books.php">Add books here</a></td></tr>';
             }

@@ -133,6 +133,8 @@ if (isset($_POST['btn_update']) && trim($_POST['title']) != "" && trim($_POST['a
                     <th>BOOK Publisher</th>
                     <th>Action</th>
                 </tr>
+                <!-- Fetching data from database -->
+
                 <?php
                 if (mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
@@ -152,6 +154,7 @@ if (isset($_POST['btn_update']) && trim($_POST['title']) != "" && trim($_POST['a
                         <button type="submit" name="btn_update" value="<?php echo $bookid; ?>">Update</button>
                     </td>
                 </tr>
+                <!-- Fetching data from database -->
                 <?php
                     }
                 } else {

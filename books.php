@@ -86,6 +86,8 @@ include('connection.php');
         margin-top: 10px;
     }
     </style>
+
+    <!--javascript validation on php-->
     <script>
     function valid() {
         var title = document.getElementById('title').value.trim();
@@ -99,6 +101,8 @@ include('connection.php');
         return true;
     }
     </script>
+    <!---->
+
 </head>
 
 <body>
@@ -122,6 +126,8 @@ include('connection.php');
                     <td colspan="2"><input type="submit" name="submit" value="Insert Book"></td>
                 </tr>
             </table>
+
+            <!--php code for insertion-->
             <?php
             if (isset($_POST['submit']) && trim($_POST['title'] != "") && trim($_POST['author'] != "") && trim($_POST['publisher'] != "")) {
                 $title = $_POST['title'];

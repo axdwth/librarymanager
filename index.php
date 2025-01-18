@@ -128,6 +128,7 @@ if (isset($_POST['btn_delete'])) {
                         $title = $row['title'];
                         $publisher = $row['publisher'];
                         $author = $row['author'];
+                          
                 ?>
                 <tr>
                     <td><input type="text" name="title" id="title" value="<?php echo $title; ?>" readonly></td>
