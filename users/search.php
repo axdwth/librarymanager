@@ -1,14 +1,13 @@
 <?php
 include('../connection_class/connection.php');
-?>
-<?php
-$author = $publisher = $title = $bookid = "";
 
 if (isset($_POST['searchitem'])) {
     $search = mysqli_real_escape_string($conn, $_POST['searchitem']);
-    $selqry = "SELECT * FROM tbl_books WHERE title LIKE '%$search%'";
+    $selqry = "SELECT * FROM tbl_books WHERE title LIKE '%$search%' OR author LIKE '%$search%' OR publisher LIKE '%$search%'";
     $result = mysqli_query($conn, $selqry);
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -124,14 +123,14 @@ if (isset($_POST['searchitem'])) {
         <form action="search.php" method="POST">
             <table>
                 <tr>
-                    <th><input type="search" name="searchitem" id="searchitem" placeholder="Search by book title...">
-                    </th>
+                    <th><input type="search" name="searchitem" id="searchitem"
+                            placeholder="Search by title, author, or publisher..."></th>
                 </tr>
             </table>
             <button type="submit">Search</button>
         </form>
 
-        <table border="1">
+        <table>
             <tr>
                 <th>BOOK Title</th>
                 <th>BOOK Author</th>
@@ -146,22 +145,14 @@ if (isset($_POST['searchitem'])) {
                     $publisher = $row['publisher'];
                     $author = $row['author'];
             ?>
-            <?php
-                }
-            ?>
             <tr>
                 <td><input type="text" name="title" id="title" value="<?php echo $title; ?>" readonly></td>
                 <td><input type="text" name="author" id="author" value="<?php echo $author; ?>" readonly></td>
                 <td><input type="text" name="publisher" id="publisher" value="<?php echo $publisher; ?>" readonly></td>
-                <td>
-                    <form action="search.php" method="POST">
-                        <button type="submit" name="btn_delete" value="<?php echo $bookid; ?>">Delete</button>
-                    </form>
-                </td>
+                >
             </tr>
-
             <?php
-                
+                }
             } else {
                 echo '<tr><td colspan="4" class="no-record">No record found. <a href="books.php">Add books here</a></td></tr>';
             }

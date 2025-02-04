@@ -1,17 +1,25 @@
 <?php
 include('../connection_class/connection.php');
-?>
-<?php
-$author = $publisher = $title = $bookid = "";
+
+$bookid = $title = $author = $publisher = $isbn = $year = $cover = "";
+
 $selqry = "SELECT * FROM tbl_books";
 $result = mysqli_query($conn, $selqry);
 
-if (isset($_POST['btn_update']) && trim($_POST['title']) != "" && trim($_POST['author']) != "" && trim($_POST['publisher']) != "") {
+if (isset($_POST['btn_update']) && trim($_POST['title']) != "" && trim($_POST['author']) != "" && trim($_POST['publisher']) != "" && trim($_POST['isbn']) != "" && trim($_POST['year']) != "") {
     $ubookid = $_POST['btn_update'];
     $utitle = $_POST['title'];
     $uauthor = $_POST['author'];
     $upublisher = $_POST['publisher'];
-    $updateqry = "UPDATE tbl_books SET author='$uauthor', publisher='$upublisher', title='$utitle' WHERE book_id=$ubookid";
+    $uisbn = $_POST['isbn'];
+    $uyear = $_POST['year'];
+
+    if (isset($_FILES['cover']) && $_FILES['cover']['error'] == 0) {
+        $cover = 'uploads/' . basename($_FILES['cover']['name']);
+        move_uploaded_file($_FILES['cover']['tmp_name'], $cover);
+    }
+
+    $updateqry = "UPDATE tbl_books SET title='$utitle', author='$uauthor', publisher='$upublisher', isbn='$uisbn', year='$uyear', cover='$cover' WHERE book_id=$ubookid";
 
     if (mysqli_query($conn, $updateqry)) {
         echo "<div class='message'>Updation successful</div>";
@@ -73,7 +81,9 @@ if (isset($_POST['btn_update']) && trim($_POST['title']) != "" && trim($_POST['a
         color: white;
     }
 
-    input[type="text"] {
+    input[type="text"],
+    input[type="file"],
+    input[type="number"] {
         width: 100%;
         padding: 8px;
         border: 1px solid #ddd;
@@ -124,16 +134,18 @@ if (isset($_POST['btn_update']) && trim($_POST['title']) != "" && trim($_POST['a
 
 <body>
     <div class="container">
-        <form action="update.php" method="POST">
+        <form action="update.php" method="POST" enctype="multipart/form-data">
             <h1>Update Book</h1>
             <table>
                 <tr>
                     <th>BOOK Title</th>
                     <th>BOOK Author</th>
                     <th>BOOK Publisher</th>
+                    <th>BOOK ISBN</th>
+                    <th>BOOK Year</th>
+                    <th>Cover Image</th>
                     <th>Action</th>
                 </tr>
-                <!-- Fetching data from database -->
 
                 <?php
                 if (mysqli_num_rows($result) > 0) {
@@ -142,23 +154,31 @@ if (isset($_POST['btn_update']) && trim($_POST['title']) != "" && trim($_POST['a
                         $title = $row['title'];
                         $publisher = $row['publisher'];
                         $author = $row['author'];
+                        $isbn = $row['isbn'];
+                        $year = $row['year'];
+                        $cover = $row['cover'];
                 ?>
                 <tr>
-                    <td><input type="text" name="title" id="title" placeholder="<?php echo $title; ?>"
-                            value="<?php echo $title; ?>"></td>
-                    <td><input type="text" name="author" id="author" placeholder="<?php echo $author; ?>"
-                            value="<?php echo $author; ?>"></td>
-                    <td><input type="text" name="publisher" id="publisher" placeholder="<?php echo $publisher; ?>"
-                            value="<?php echo $publisher; ?>"></td>
+                    <td><input type="text" name="title" id="title" value="<?php echo $title; ?>" required></td>
+                    <td><input type="text" name="author" id="author" value="<?php echo $author; ?>" required></td>
+                    <td><input type="text" name="publisher" id="publisher" value="<?php echo $publisher; ?>" required>
+                    </td>
+                    <td><input type="text" name="isbn" id="isbn" value="<?php echo $isbn; ?>" required></td>
+                    <td><input type="number" name="year" id="year" value="<?php echo $year; ?>" required></td>
+                    <td>
+                        <?php if ($cover) { ?>
+                        <img src="<?php echo $cover; ?>" alt="Book Cover" width="50" height="50">
+                        <?php } ?>
+                        <input type="file" name="cover" id="cover" accept="image/*">
+                    </td>
                     <td>
                         <button type="submit" name="btn_update" value="<?php echo $bookid; ?>">Update</button>
                     </td>
                 </tr>
-                <!-- Fetching data from database -->
                 <?php
                     }
                 } else {
-                    echo '<tr><td colspan="4" class="alert">No record found <a href="books.php">Add books here</a></td></tr>';
+                    echo '<tr><td colspan="7" class="alert">No record found <a href="books.php">Add books here</a></td></tr>';
                 }
                 ?>
             </table>

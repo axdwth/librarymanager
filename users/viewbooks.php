@@ -1,23 +1,24 @@
 <?php
 include('../connection_class/connection.php');
-?>
-<?php
-$author = $publisher = $title = $bookid = "";
-$selqry = "SELECT * from tbl_books";
+
+$selqry = "SELECT * FROM tbl_books";
 $result = mysqli_query($conn, $selqry);
+
 if (isset($_POST['btn_delete'])) {
     $delete_id = $_POST['btn_delete'];
-    $delqry = "DELETE FROM tbl_books where book_id= $delete_id";
+    $delqry = "DELETE FROM tbl_books WHERE book_id = $delete_id";
     $result = mysqli_query($conn, $delqry);
+    
     if ($result) {
         echo "Deletion successful";
         header("location:index.php");
         exit();
     } else {
-        echo "Error";
+        echo "Error in deletion.";
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,6 +38,16 @@ if (isset($_POST['btn_delete'])) {
         height: 100vh;
     }
 
+    .container {
+        width: 90%;
+        max-width: 1000px;
+        margin: auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
     header {
         background-color: #4CAF50;
         color: white;
@@ -49,31 +60,10 @@ if (isset($_POST['btn_delete'])) {
         font-size: 2.5em;
     }
 
-    nav {
-        margin-top: 15px;
-    }
-
-    nav a {
-        color: white;
-        text-decoration: none;
-        margin: 0 15px;
-        font-weight: bold;
-    }
-
-    nav a:hover {
-        text-decoration: underline;
-    }
-
-
-    h1 {
-        color: #333;
-    }
-
     table {
-        width: 80%;
+        width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
-        background-color: #fff;
     }
 
     th,
@@ -126,14 +116,12 @@ if (isset($_POST['btn_delete'])) {
         cursor: pointer;
     }
 
-    .container {
-        width: 90%;
-        max-width: 1000px;
-        margin: auto;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    footer {
+        text-align: center;
+        margin-top: 20px;
+        padding: 10px 0;
+        background-color: #f4f4f9;
+        width: 100%;
     }
     </style>
 </head>
@@ -141,58 +129,56 @@ if (isset($_POST['btn_delete'])) {
 <body>
 
     <div class="container">
-        <h1>Books</h1>
-        <form action="index.php" method="POST">
-            <header>
-                <nav>
+        <header>
+            <h1>Books</h1>
+        </header>
 
-                </nav>
-                </h4>
-            </header>
-            <main>
-                <table>
-                    <tr>
-                        <th>BOOK Title</th>
-                        <th>BOOK Author</th>
-                        <th>BOOK Publisher</th>
-                        <th>Action</th>
-                    </tr>
-                    <?php
+        <main>
+            <table>
+                <tr>
+                    <th>BOOK Title</th>
+                    <th>BOOK Author</th>
+                    <th>BOOK Publisher</th>
+                    <th>Action</th>
+                </tr>
+                <?php
                 if (mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
                         $bookid = $row['book_id'];
                         $title = $row['title'];
                         $publisher = $row['publisher'];
                         $author = $row['author'];
-                          
                 ?>
-                    <tr>
-                        <td><input type="text" name="title" id="title" value="<?php echo $title; ?>" readonly></td>
-                        <td><input type="text" name="author" id="author" value="<?php echo $author; ?>" readonly></td>
-                        <td><input type="text" name="publisher" id="publisher" value="<?php echo $publisher; ?>"
-                                readonly>
-                        </td>
-                        <td>
+                <tr>
+                    <td><input type="text" name="title" id="title" value="<?php echo $title; ?>" readonly></td>
+                    <td><input type="text" name="author" id="author" value="<?php echo $author; ?>" readonly></td>
+                    <td><input type="text" name="publisher" id="publisher" value="<?php echo $publisher; ?>" readonly>
+                    </td>
+                    <td>
+                        <form action="index.php" method="POST">
                             <button type="submit" name="btn_delete" value="<?php echo $bookid; ?>">Delete</button>
-                        </td>
-                    </tr>
-                    <?php
+                        </form>
+                    </td>
+                </tr>
+                <?php
                     }
                 } else {
                     echo '<tr><td colspan="4" class="no-record">No records found. <a href="books.php">Add books here</a></td></tr>';
                 }
                 ?>
-                </table>
-                <div style="margin-top: 20px;">
+            </table>
 
-                    <h4><a href="search.php">Search Books Here</a></h4>
-                </div>
-            </main>
-        </form>
+            <div style="margin-top: 20px;">
+                <h4><a href="search.php">Search Books Here</a></h4>
+            </div>
+        </main>
+
     </div>
+
     <footer>
         <p>&copy; 2025 All rights reserved</p>
     </footer>
+
 </body>
 
 </html>
