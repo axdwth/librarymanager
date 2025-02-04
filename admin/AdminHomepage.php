@@ -1,5 +1,5 @@
 <?php
-include('../connection_class/connection.php');
+include('../assets/connection/connection.php');
 ?>
 <?php
 $author = $publisher = $title = $bookid = "";

@@ -110,7 +110,7 @@
         <nav>
             <h3>
                 <a href="index.php">Home</a>
-                <a href="../librarymanager/books/viewbooks.php  ">Books</a>
+                <a href="../librarymanager/guest/login.php">Books</a>
                 <a href="../librarymanager/guest/login.php">Login</a>
             </h3>
         </nav>

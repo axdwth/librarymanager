@@ -1,6 +1,5 @@
 <?php
-include('../connection_class/connection.php');
-
+include('../assets/connection/connection.php');
 
 if (isset($_POST['searchitem'])) {
     $search = mysqli_real_escape_string($conn, $_POST['searchitem']);

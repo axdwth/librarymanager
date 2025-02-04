@@ -1,22 +1,8 @@
 <?php
-include('../connection_class/connection.php');
+include('../assets/connection/connection.php');
 
 $selqry = "SELECT * FROM tbl_books";
 $result = mysqli_query($conn, $selqry);
-
-if (isset($_POST['btn_delete'])) {
-    $delete_id = $_POST['btn_delete'];
-    $delqry = "DELETE FROM tbl_books WHERE book_id = $delete_id";
-    $result = mysqli_query($conn, $delqry);
-    
-    if ($result) {
-        echo "Deletion successful";
-        header("location:index.php");
-        exit();
-    } else {
-        echo "Error in deletion.";
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -139,7 +125,6 @@ if (isset($_POST['btn_delete'])) {
                     <th>BOOK Title</th>
                     <th>BOOK Author</th>
                     <th>BOOK Publisher</th>
-                    <th>Action</th>
                 </tr>
                 <?php
                 if (mysqli_num_rows($result) > 0) {
@@ -153,11 +138,6 @@ if (isset($_POST['btn_delete'])) {
                     <td><input type="text" name="title" id="title" value="<?php echo $title; ?>" readonly></td>
                     <td><input type="text" name="author" id="author" value="<?php echo $author; ?>" readonly></td>
                     <td><input type="text" name="publisher" id="publisher" value="<?php echo $publisher; ?>" readonly>
-                    </td>
-                    <td>
-                        <form action="index.php" method="POST">
-                            <button type="submit" name="btn_delete" value="<?php echo $bookid; ?>">Delete</button>
-                        </form>
                     </td>
                 </tr>
                 <?php

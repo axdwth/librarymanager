@@ -1,15 +1,13 @@
 <?php
-include('../connection_class/connection.php');
+include('../assets/connection/connection.php');
 
-if (isset($_POST['searchitem'])) {
+if (isset($_POST['searchitem'])&&!empty($_POST['searchitem'])) {
+
     $search = mysqli_real_escape_string($conn, $_POST['searchitem']);
-    $selqry = "SELECT * FROM tbl_books WHERE title LIKE '%$search%' OR author LIKE '%$search%' OR publisher LIKE '%$search%'";
+    $selqry = "SELECT * FROM tbl_books WHERE title LIKE '%$search%' OR author LIKE '%$search%' OR publisher LIKE '%$search%'OR title LIKE '%$search%'" ;
     $result = mysqli_query($conn, $selqry);
 }
-
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -116,6 +114,19 @@ if (isset($_POST['searchitem'])) {
     }
     </style>
 </head>
+<script>
+/*function valid() {
+    var searchInput = document.getElementById('searchitem').value;
+
+
+    if (searchInput.trim() === "") {
+        alert("Please enter a search term.");
+        return false;
+    }
+
+    return true;
+}*/
+</script>
 
 <body>
     <div class="container">
@@ -124,20 +135,20 @@ if (isset($_POST['searchitem'])) {
             <table>
                 <tr>
                     <th><input type="search" name="searchitem" id="searchitem"
-                            placeholder="Search by title, author, or publisher..."></th>
+                            placeholder="Search by title, author, or publisher..." onclick="valid()"></th>
                 </tr>
             </table>
             <button type="submit">Search</button>
-        </form>
 
-        <table>
-            <tr>
-                <th>BOOK Title</th>
-                <th>BOOK Author</th>
-                <th>BOOK Publisher</th>
-                <th>Action</th>
-            </tr>
-            <?php
+
+            <table>
+                <tr>
+                    <th>BOOK Title</th>
+                    <th>BOOK Author</th>
+                    <th>BOOK Publisher</th>
+                    <th>Action</th>
+                </tr>
+                <?php
             if (isset($result) && mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     $bookid = $row['book_id'];
@@ -145,24 +156,30 @@ if (isset($_POST['searchitem'])) {
                     $publisher = $row['publisher'];
                     $author = $row['author'];
             ?>
-            <tr>
-                <td><input type="text" name="title" id="title" value="<?php echo $title; ?>" readonly></td>
-                <td><input type="text" name="author" id="author" value="<?php echo $author; ?>" readonly></td>
-                <td><input type="text" name="publisher" id="publisher" value="<?php echo $publisher; ?>" readonly></td>
-                >
-            </tr>
-            <?php
+                <tr>
+                    <td><input type="text" name="title" id="title" value="<?php echo $title; ?>" readonly></td>
+                    <td><input type="text" name="author" id="author" value="<?php echo $author; ?>" readonly></td>
+                    <td><input type="text" name="publisher" id="publisher" value="<?php echo $publisher; ?>" readonly>
+                    </td>
+                    <td>
+                        <form action="search.php" method="POST">
+                            <button type="submit" name="btn_take" value="<?php echo $bookid; ?>">Take it</button>
+                        </form>
+                    </td>
+                </tr>
+                <?php
                 }
             } else {
-                echo '<tr><td colspan="4" class="no-record">No record found. <a href="books.php">Add books here</a></td></tr>';
+                echo '<tr><td colspan="4" class="no-record">No record found. </td></tr>';
             }
             ?>
-        </table>
+            </table>
 
-        <div class="back-link">
-            <h4><a href="index.php">Back to Home</a></h4>
-        </div>
+            <div class="back-link">
+                <h4><a href="Homepage.php">Back to Home</a></h4>
+            </div>
     </div>
+    </form>
 </body>
 
 </html>

@@ -1,5 +1,5 @@
 <?php
-include('../connection_class/connection.php');
+include('../assets/connection/connection.php');
 
 $selqry = "SELECT * FROM tbl_books";
 $result = mysqli_query($conn, $selqry);
